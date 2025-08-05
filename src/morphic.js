@@ -10200,6 +10200,21 @@ MenuItemMorph.prototype.mouseClickLeft = function () {
     }
 };
 
+// personal fix for issue #515
+// (maybe *unhandled* "secondary click" should be treated as click everywhere? idk)
+
+MenuItemMorph.prototype.mouseClickRight = function () {
+    if (this.action instanceof MenuMorph) {
+        this.popUpSubmenu();
+    } else {
+        if (!this.isListItem()) {
+            this.parentThatIsA(MenuMorph).closeRootMenu();
+            this.world().activeMenu = null;
+        }
+        this.trigger();
+    }
+};
+
 MenuItemMorph.prototype.isListItem = function () {
 	var menu = this.parentThatIsA(MenuMorph);
     if (menu) {
